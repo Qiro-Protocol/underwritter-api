@@ -6,15 +6,63 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  ADMIN
+  BORROWER
+  UNDERWRITER
+  LENDER
+  USER
+}
+
+enum RecordType {
+  CREDIT
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  username  String   @unique
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  username  String     @unique
   password  String
   profileId Int?
+  company   Company[]
+  role      UserRole   @default(USER)
+  record    Record[]
+  documents Document[]
+}
+
+model Company {
+  id          Int      @id @default(autoincrement())
+  name        String
+  headLine    String
+  description String
+  logo        String
+  website     String
+  city        String
+  country     String
+  foundedYear DateTime
+  teamSize    String
+  owner       User     @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+}
+
+model Record {
+  id     Int        @id @default(autoincrement())
+  label  String
+  value  String
+  User   User?      @relation(fields: [userId], references: [id])
+  userId Int?
+  type   RecordType
+}
+
+model Document {
+  id     Int    @id @default(autoincrement())
+  label  String
+  link   String
+  User   User?  @relation(fields: [userId], references: [id])
+  userId Int?
 }
