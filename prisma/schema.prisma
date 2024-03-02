@@ -64,3 +64,26 @@ model Document {
   Company   Company? @relation(fields: [companyId], references: [id])
   companyId Int?
 }
+
+enum ApplicationStatus {
+  IN_REVIEW
+  PENDING
+  APPROVeD
+}
+
+model Application {
+  id          Int               @id @default(autoincrement())
+  slug        String
+  details     String?
+  loanAmmount Int?
+  status      ApplicationStatus @default(PENDING)
+  Policy      Policy?           @relation(fields: [policyId], references: [id])
+  policyId    Int?
+}
+
+model Policy {
+  id           Int           @id @default(autoincrement())
+  name         String
+  polciyCode   Json
+  applications Application[]
+}
