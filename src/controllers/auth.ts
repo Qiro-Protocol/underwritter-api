@@ -1,12 +1,11 @@
-import { Request, Response } from "express";
+import { type Request, type Response } from "express";
 import bcrypt from "bcrypt";
-import { hashPassword } from "../utils";
-import { createJwtToken } from "../utils";
-import { prisma } from "../utils";
+
+import { prisma, createJwtToken, hashPassword } from "../utils";
+import { validateUser } from "../validators/validate-user";
 
 export const regiseterUser = async (req: Request, res: Response) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const { password, username } = validateUser.parse(req.body);
   try {
     const hashedpassword = await hashPassword(password);
     if (hashedpassword) {
@@ -41,9 +40,7 @@ export const regiseterUser = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  console.log(username, password);
+  const { username, password } = validateUser.parse(req.body);
   try {
     const user = await prisma.user.findUnique({
       where: {
