@@ -1,9 +1,9 @@
-import {Router} from "express"
-import { testController } from "../controllers/testController"
+import { Router } from "express";
+import { testController } from "../controllers/testController";
+import { verifyJwt } from "@/middleware/verify";
 
-const router = Router()
+const router = Router();
 
-router.get("/", testController)
+router.get("/", verifyJwt, testController);
 
-
-export default router
+export default router;

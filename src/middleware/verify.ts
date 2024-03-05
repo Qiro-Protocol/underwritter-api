@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 export const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization;
+  console.log(req.cookies);
+  const token = req.cookies.token;
   const privateKey = process.env.JWT_TOKEN_SECRETE;
   if (token && privateKey) {
     try {
