@@ -24,6 +24,8 @@ model User {
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @default(now())
   email              String              @unique
+  firstName          String
+  lastName           String
   password           String
   profileId          Int?
   onboarded          Boolean             @default(false)
@@ -36,17 +38,16 @@ model User {
 model Company {
   id          Int        @id @default(autoincrement())
   name        String
-  headLine    String
-  description String
-  logo        String
-  website     String
-  city        String
-  country     String
-  foundedYear DateTime
+  headLine    String?
+  description String?
+  logo        String?
+  website     String?
+  location    String
+  foundedYear String
   teamSize    String
   owner       User       @relation(fields: [ownerId], references: [id])
   ownerId     Int
-  creidt      Record[]
+  credit      Record[]
   documents   Document[]
 }
 
@@ -54,15 +55,23 @@ model Record {
   id        Int        @id @default(autoincrement())
   label     String
   value     String
-  type      RecordType
+  type      RecordType @default(CREDIT)
   Company   Company?   @relation(fields: [companyId], references: [id])
   companyId Int?
 }
 
+enum DOCUMENT_TYPES {
+  SUBSIDIARY_DOCS
+  LICENSES
+  AGREEMENTS
+  INVESTOR_DECK
+}
+
 model Document {
-  id    Int    @id @default(autoincrement())
-  label String
-  link  String
+  id           Int            @id @default(autoincrement())
+  label        String
+  link         String
+  documentType DOCUMENT_TYPES
 
   Company   Company? @relation(fields: [companyId], references: [id])
   companyId Int?

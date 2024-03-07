@@ -5,7 +5,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
-import { onBoardingRoute } from "./routes/onboarding";
+import { borrowerRoute } from "./routes/borrower";
+import { verifyJwt } from "./middleware/verify";
 config();
 
 const app = express();
@@ -21,6 +22,6 @@ app.use(
 
 app.use("/", homeRoute);
 app.use("/auth", authRoute);
-app.use("/onboarding", onBoardingRoute);
+app.use("/borrower", verifyJwt, borrowerRoute);
 
 export default app;

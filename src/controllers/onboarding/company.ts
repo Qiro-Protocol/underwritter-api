@@ -5,8 +5,7 @@ import { ValidateCompanyData } from "@/validators/validator-company";
 export const createCompany = async (req: Request, res: Response) => {
   try {
     const {
-      city,
-      country,
+      location,
       description,
       foundedYear,
       headLine,
@@ -14,22 +13,21 @@ export const createCompany = async (req: Request, res: Response) => {
       name,
       teamSize,
       website,
-      id,
+      userId,
     } = ValidateCompanyData.parse(req.body);
     const comp = await prisma.company.create({
       data: {
         name,
-        city,
-        country,
         description,
         headLine,
         foundedYear,
         logo,
         teamSize,
+        location,
         website,
         owner: {
           connect: {
-            id,
+            id: userId,
           },
         },
       },
@@ -41,6 +39,7 @@ export const createCompany = async (req: Request, res: Response) => {
       err: null,
     });
   } catch (e) {
+    console.log(e);
     res.status(500);
     res.json({
       data: null,

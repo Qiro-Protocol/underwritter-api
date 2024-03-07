@@ -1,25 +1,33 @@
 import { type Request, type Response } from "express";
 import bcrypt from "bcrypt";
 
-import { prisma, createJwtToken, hashPassword } from "../utils";
-import { validateUser } from "../validators/validate-user";
+import { prisma, createJwtToken, hashPassword } from "@/utils";
+import { validateEmail, validateUser } from "@/validators/validate-user";
 const test_pass = "yesvikash29";
 
 export const regiseterUser = async (req: Request, res: Response) => {
   try {
-    const { email } = validateUser.parse(req.body);
+    const { email, firstName, lastName, role } = validateUser.parse(req.body);
     const hashedpassword = await hashPassword(test_pass);
     if (hashedpassword) {
       const user = await prisma.user.create({
         data: {
           email,
           password: hashedpassword,
+          firstName,
+          lastName,
+          role,
         },
       });
-      console.log(user);
       if (user) {
         const token = createJwtToken(user.id.toString());
         res.status(200);
+        res.cookie("token", token, {
+          httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+          secure: process.env.NODE_ENV !== "development", // Use HTTPS in production
+          maxAge: 3600000, // 1 hour in milliseconds
+          sameSite: "strict", // Restricts the cookie to the same site
+        });
         res.json({
           data: {
             token,
@@ -43,7 +51,7 @@ export const regiseterUser = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-  const { email } = validateUser.parse(req.body);
+  const { email } = validateEmail.parse(req.body);
   try {
     const user = await prisma.user.findUnique({
       where: {
