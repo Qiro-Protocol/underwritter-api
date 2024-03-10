@@ -32,6 +32,15 @@ export const createCompany = async (req: Request, res: Response) => {
         },
       },
     });
+    const application = await prisma.application.create({
+      data: {
+        status: "PENDING",
+        slug: `${comp.name}${comp.id}`,
+        details: comp.description,
+        loanAmmount: 200,
+      },
+    });
+    console.log(application);
 
     res.status(201);
     res.json({

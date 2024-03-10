@@ -10,6 +10,7 @@ import authRoute from "./routes/auth";
 import { borrowerRoute } from "./routes/borrower";
 import { verifyJwt } from "./middleware/verify";
 import { serviceRouter } from "./routes/service";
+import { underwriterRoute } from "./routes/underwriter";
 
 config();
 
@@ -28,5 +29,6 @@ app.use("/", homeRoute);
 app.use("/auth", authRoute);
 app.use("/borrower", verifyJwt, borrowerRoute);
 app.use("/service", verifyJwt, serviceRouter);
+app.use("/underwriter", verifyJwt, underwriterRoute);
 
 export default app;

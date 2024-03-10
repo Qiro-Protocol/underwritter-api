@@ -1,4 +1,3 @@
-import { prisma } from "@/utils";
 import { Request, Response } from "express";
 
 const underwritterstats = [
@@ -14,21 +13,11 @@ const underwritterstats = [
   },
 ] as const;
 
-export async function getUnderWritterStats(req: Request, res: Response) {
+export async function getUnderWritterStats(_: Request, res: Response) {
   try {
-    const { id } = req.body;
-    const profile = await prisma.underwriterProfile.findUnique({
-      where: {
-        userId: id,
-      },
-    });
-
     res.status(200);
     res.json({
-      data: {
-        profile: profile,
-        stats: underwritterstats,
-      },
+      data: underwritterstats,
       err: null,
     });
   } catch (e) {

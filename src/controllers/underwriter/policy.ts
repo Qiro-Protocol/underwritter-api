@@ -1,3 +1,4 @@
+import { makeRequestMumbai } from "@/lib/functions/request";
 import { prisma } from "@/utils";
 import {
   validateCreatePolicy,
@@ -14,7 +15,7 @@ export async function createPolicy(req: Request, res: Response) {
         polciyCode,
         owner: {
           connect: {
-            id,
+            id: Number(id),
           },
         },
       },
@@ -39,7 +40,7 @@ export async function getAllPolicies(req: Request, res: Response) {
     const { id } = req.body;
     const allPolcies = await prisma.policy.findMany({
       where: {
-        userId: id,
+        userId: Number(id),
       },
     });
     res.status(200);
@@ -48,6 +49,7 @@ export async function getAllPolicies(req: Request, res: Response) {
       err: null,
     });
   } catch (e) {
+    console.log(e);
     res.status(500);
     res.json({
       data: null,
@@ -58,8 +60,43 @@ export async function getAllPolicies(req: Request, res: Response) {
 
 export async function DeployPolicy(req: Request, res: Response) {
   try {
-    const { appId, id } = validatePolicyDeployInput.parse(req.body);
-    console.log(appId, id);
+    const { appId, policyId } = validatePolicyDeployInput.parse(req.body);
+    const app = await prisma.application.findUnique({
+      where: {
+        id: appId,
+      },
+    });
+    const polciy = await prisma.policy.findUnique({
+      where: {
+        id: policyId,
+      },
+    });
+
+    if (!app || !polciy) {
+      res.status(404);
+      res.json({
+        data: null,
+        err: {
+          message: "No applicaton found with provided app id",
+        },
+      });
+    }
+
+    await prisma.application.update({
+      where: {
+        id: appId,
+      },
+      data: {
+        Policy: {
+          connect: {
+            id: policyId,
+          },
+        },
+      },
+    });
+    const r = await makeRequestMumbai();
+    console.log(r);
+
     res.status(200);
     res.json({
       data: {
@@ -68,7 +105,8 @@ export async function DeployPolicy(req: Request, res: Response) {
       err: null,
     });
   } catch (e) {
-    res.status(200);
+    console.log(e);
+    res.status(500);
     res.json({
       data: null,
       err: "INTERNAL SERVER ERRRO",

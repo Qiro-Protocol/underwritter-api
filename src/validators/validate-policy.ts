@@ -2,10 +2,10 @@ import { z } from "zod";
 export const validateCreatePolicy = z.object({
   name: z.string(),
   polciyCode: z.any(),
-  id: z.number(),
+  id: z.string(),
 });
 
 export const validatePolicyDeployInput = z.object({
-  id: z.number(),
+  policyId: z.number(),
   appId: z.number(),
 });
