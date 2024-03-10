@@ -5,7 +5,13 @@ CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'BORROWER', 'UNDERWRITER', 'LENDER', 'U
 CREATE TYPE "RecordType" AS ENUM ('CREDIT');
 
 -- CreateEnum
+CREATE TYPE "DOCUMENT_TYPES" AS ENUM ('SUBSIDIARY_DOCS', 'LICENSES', 'AGREEMENTS', 'INVESTOR_DECK');
+
+-- CreateEnum
 CREATE TYPE "ApplicationStatus" AS ENUM ('IN_REVIEW', 'PENDING', 'APPROVeD');
+
+-- CreateEnum
+CREATE TYPE "ServiceDataType" AS ENUM ('CREDIT', 'DEBIT', 'BANK', 'UNKOWN');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -28,13 +34,12 @@ CREATE TABLE "User" (
 CREATE TABLE "Company" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "headLine" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "logo" TEXT NOT NULL,
-    "website" TEXT NOT NULL,
-    "city" TEXT NOT NULL,
-    "country" TEXT NOT NULL,
-    "foundedYear" TIMESTAMP(3) NOT NULL,
+    "headLine" TEXT,
+    "description" TEXT,
+    "logo" TEXT,
+    "website" TEXT,
+    "location" TEXT NOT NULL,
+    "foundedYear" TEXT NOT NULL,
     "teamSize" TEXT NOT NULL,
     "ownerId" INTEGER NOT NULL,
 
@@ -46,7 +51,7 @@ CREATE TABLE "Record" (
     "id" SERIAL NOT NULL,
     "label" TEXT NOT NULL,
     "value" TEXT NOT NULL,
-    "type" "RecordType" NOT NULL,
+    "type" "RecordType" NOT NULL DEFAULT 'CREDIT',
     "companyId" INTEGER,
 
     CONSTRAINT "Record_pkey" PRIMARY KEY ("id")
@@ -57,6 +62,7 @@ CREATE TABLE "Document" (
     "id" SERIAL NOT NULL,
     "label" TEXT NOT NULL,
     "link" TEXT NOT NULL,
+    "documentType" "DOCUMENT_TYPES" NOT NULL,
     "companyId" INTEGER,
 
     CONSTRAINT "Document_pkey" PRIMARY KEY ("id")
@@ -95,6 +101,19 @@ CREATE TABLE "UnderwriterProfile" (
     CONSTRAINT "UnderwriterProfile_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Service" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "dataType" "ServiceDataType" NOT NULL,
+    "data" JSONB,
+    "userId" INTEGER NOT NULL,
+    "companyId" INTEGER NOT NULL,
+
+    CONSTRAINT "Service_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -115,3 +134,9 @@ ALTER TABLE "Application" ADD CONSTRAINT "Application_policyId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "UnderwriterProfile" ADD CONSTRAINT "UnderwriterProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Service" ADD CONSTRAINT "Service_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Service" ADD CONSTRAINT "Service_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

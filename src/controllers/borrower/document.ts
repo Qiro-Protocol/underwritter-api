@@ -10,6 +10,7 @@ export async function addDocument(req: Request, res: Response) {
         label,
         companyId,
         link,
+        documentType: "AGREEMENTS",
       },
     });
 

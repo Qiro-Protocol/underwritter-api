@@ -1,12 +1,16 @@
 import express from "express";
-import homeRoute from "./routes/homeRoute";
-import authRoute from "./routes/auth";
 import cors from "cors";
 import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
 import { config } from "dotenv";
+
+import cookieParser from "cookie-parser";
+import homeRoute from "./routes/homeRoute";
+import authRoute from "./routes/auth";
+
 import { borrowerRoute } from "./routes/borrower";
 import { verifyJwt } from "./middleware/verify";
+import { serviceRouter } from "./routes/service";
+
 config();
 
 const app = express();
@@ -23,5 +27,6 @@ app.use(
 app.use("/", homeRoute);
 app.use("/auth", authRoute);
 app.use("/borrower", verifyJwt, borrowerRoute);
+app.use("/service", verifyJwt, serviceRouter);
 
 export default app;
