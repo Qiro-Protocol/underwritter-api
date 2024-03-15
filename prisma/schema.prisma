@@ -35,6 +35,7 @@ model User {
   underWirterProfile UnderwriterProfile?
   Service            Service[]
   Policy             Policy[]
+  Subscription       Subscription[]
 }
 
 model Company {
@@ -47,7 +48,7 @@ model Company {
   location    String
   foundedYear String
   teamSize    String
-  owner       User       @relation(fields: [ownerId], references: [id])
+  owner       User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId     Int
   credit      Record[]
   documents   Document[]
@@ -59,7 +60,7 @@ model Record {
   label     String
   value     String
   type      RecordType @default(CREDIT)
-  Company   Company?   @relation(fields: [companyId], references: [id])
+  Company   Company?   @relation(fields: [companyId], references: [id], onDelete: Cascade)
   companyId Int?
 }
 
@@ -76,7 +77,7 @@ model Document {
   link         String
   documentType DOCUMENT_TYPES
 
-  Company   Company? @relation(fields: [companyId], references: [id])
+  Company   Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
   companyId Int?
 }
 
@@ -87,13 +88,15 @@ enum ApplicationStatus {
 }
 
 model Application {
-  id          Int               @id @default(autoincrement())
-  slug        String
-  details     String?
-  loanAmmount Int?
-  status      ApplicationStatus @default(PENDING)
-  Policy      Policy?           @relation(fields: [policyId], references: [id])
-  policyId    Int?
+  id             Int               @id @default(autoincrement())
+  slug           String
+  details        String?
+  loanAmmount    Int?
+  status         ApplicationStatus @default(PENDING)
+  Policy         Policy?           @relation(fields: [policyId], references: [id])
+  policyId       Int?
+  Subscription   Subscription?     @relation(fields: [subscriptionId], references: [id])
+  subscriptionId Int?
 }
 
 model Policy {
@@ -101,7 +104,7 @@ model Policy {
   name         String
   polciyCode   Json
   applications Application[]
-  owner        User          @relation(fields: [userId], references: [id])
+  owner        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int
 }
 
@@ -111,7 +114,7 @@ model UnderwriterProfile {
   acceptanceRate     Int
   default_ate        Int
   total_applications Int
-  user               User @relation(fields: [userId], references: [id])
+  user               User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId             Int  @unique
 }
 
@@ -127,9 +130,24 @@ model Service {
   name        String
   description String
   dataType    ServiceDataType
-  user        User            @relation(fields: [userId], references: [id])
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   company     Company?        @relation(fields: [companyId], references: [id])
   companyId   Int?
   extraData   Json?
+}
+
+model Subscription {
+  id                   Int           @id @default(autoincrement())
+  osner                User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name                 String
+  subscriptionId       Int
+  chainId              Int
+  routerAddress        String
+  donId                String
+  linkTokenAddress     String
+  explorerUrl          String
+  contractAdress       String
+  deployedApplications Application[]
+  ownerId              Int
 }

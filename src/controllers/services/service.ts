@@ -154,3 +154,33 @@ export async function getConnectedServicesByCompanyId(
     });
   }
 }
+
+export async function RemoveService(req: Request, res: Response) {
+  try {
+    const { companyId, serviceId } = validateConnectService.parse(req.body);
+    const resDelete = await prisma.company.update({
+      where: {
+        id: companyId,
+      },
+      data: {
+        services: {
+          disconnect: {
+            id: serviceId,
+          },
+        },
+      },
+    });
+    res.status(200);
+    res.json({
+      data: resDelete,
+      err: null,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500);
+    res.json({
+      data: null,
+      err: "internal server erro",
+    });
+  }
+}

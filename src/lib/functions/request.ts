@@ -14,16 +14,16 @@ import { ethers } from "ethers";
 import { config } from "@chainlink/env-enc";
 config();
 
-const consumerAddress = "0x781d9b08082A21aE365eFB0849B50424Bfe64b8F"; // REPLACE this with your Functions consumer address
-const subscriptionId = 2053; // REPLACE this with your subscription ID
+const consumerAddress = "0x3513FDb3F7db1aaA149feCCc614A5C642698fe1C"; // REPLACE this with your Functions consumer address
+const subscriptionId = 1323; // REPLACE this with your subscription ID
 
 // hardcoded for Polygon Mumbai
 export const makeRequestMumbai = async () => {
   // hardcoded for Polygon Mumbai
-  const routerAddress = "0xb83E47C2bC239B3bf370bc41e1459A34b41238D0";
-  const linkTokenAddress = "0x779877a7b0d9e8603169ddbd7836e478b4624789";
-  const donId = "fun-ethereum-sepolia-1";
-  const explorerUrl = "https://sepolia.etherscan.io/";
+  const routerAddress = "0x6E2dc0F9DB014aE19888F539E59285D2Ea04244C";
+  const linkTokenAddress = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB";
+  const donId = "fun-polygon-mumbai-1";
+  const explorerUrl = "https://mumbai.polygonscan.com";
 
   // Initialize functions settings
   const source = fs
@@ -40,7 +40,8 @@ export const makeRequestMumbai = async () => {
       "private key not provided - check your environment variables"
     );
 
-  const rpcUrl = "https://1rpc.io/sepolia	"; // fetch mumbai RPC URL
+  const rpcUrl =
+    "https://polygon-mumbai.g.alchemy.com/v2/kV8qIfhZYAYxIzeQrxfHrso9_R-ITP4y"; // fetch mumbai RPC URL
 
   if (!rpcUrl)
     throw new Error(`rpcUrl not provided  - check your environment variables`);
