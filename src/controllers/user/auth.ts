@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 
 import { prisma, createJwtToken, hashPassword } from "@/utils";
 import { validateEmail, validateUser } from "@/validators/validate-user";
+
 const test_pass = "yesvikash29";
 
 export const regiseterUser = async (req: Request, res: Response) => {
@@ -23,10 +24,10 @@ export const regiseterUser = async (req: Request, res: Response) => {
         const token = createJwtToken(user.id.toString());
         res.status(200);
         res.cookie("token", token, {
-          httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-          secure: process.env.NODE_ENV !== "development", // Use HTTPS in production
-          maxAge: 3600000, // 1 hour in milliseconds
-          sameSite: "strict", // Restricts the cookie to the same site
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          maxAge: 3600000,
+          sameSite: "strict",
         });
         res.json({
           data: {
@@ -64,10 +65,10 @@ export const loginUser = async (req: Request, res: Response) => {
       if (isPasswordMatched) {
         const token = createJwtToken(user.id.toString());
         res.cookie("token", token, {
-          httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-          secure: process.env.NODE_ENV !== "development", // Use HTTPS in production
-          maxAge: 3600000, // 1 hour in milliseconds
-          sameSite: "strict", // Restricts the cookie to the same site
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          maxAge: 3600000,
+          sameSite: "strict",
         });
 
         res.json({
