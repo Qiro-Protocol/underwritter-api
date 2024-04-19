@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bcrypto", "bcrypto.vcxproj", "{C60AE1CF-99F4-34F3-AF6C-97603E274DB2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EF629FF1-BD0A-CDE2-C965-2FDF20B02FF5} = {EF629FF1-BD0A-CDE2-C965-2FDF20B02FF5}
+		{22CE7915-9169-0786-278C-3C0868B17D20} = {22CE7915-9169-0786-278C-3C0868B17D20}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "secp256k1", "secp256k1.vcxproj", "{22CE7915-9169-0786-278C-3C0868B17D20}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "torsion", "torsion.vcxproj", "{EF629FF1-BD0A-CDE2-C965-2FDF20B02FF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22CE7915-9169-0786-278C-3C0868B17D20}.Release|x64.ActiveCfg = Release|x64
+		{22CE7915-9169-0786-278C-3C0868B17D20}.Release|x64.Build.0 = Release|x64
+		{22CE7915-9169-0786-278C-3C0868B17D20}.Debug|x64.ActiveCfg = Debug|x64
+		{22CE7915-9169-0786-278C-3C0868B17D20}.Debug|x64.Build.0 = Debug|x64
+		{C60AE1CF-99F4-34F3-AF6C-97603E274DB2}.Release|x64.ActiveCfg = Release|x64
+		{C60AE1CF-99F4-34F3-AF6C-97603E274DB2}.Release|x64.Build.0 = Release|x64
+		{C60AE1CF-99F4-34F3-AF6C-97603E274DB2}.Debug|x64.ActiveCfg = Debug|x64
+		{C60AE1CF-99F4-34F3-AF6C-97603E274DB2}.Debug|x64.Build.0 = Debug|x64
+		{EF629FF1-BD0A-CDE2-C965-2FDF20B02FF5}.Release|x64.ActiveCfg = Release|x64
+		{EF629FF1-BD0A-CDE2-C965-2FDF20B02FF5}.Release|x64.Build.0 = Release|x64
+		{EF629FF1-BD0A-CDE2-C965-2FDF20B02FF5}.Debug|x64.ActiveCfg = Debug|x64
+		{EF629FF1-BD0A-CDE2-C965-2FDF20B02FF5}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
