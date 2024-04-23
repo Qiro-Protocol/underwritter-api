@@ -23,7 +23,8 @@ app.set("trust proxy", 1);
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin:
+      "https://underwritter-60v2418v7-vikas-projects-e3c814ab.vercel.app/",
     credentials: true,
   })
 );
