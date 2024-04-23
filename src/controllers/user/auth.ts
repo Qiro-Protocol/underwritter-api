@@ -24,9 +24,9 @@ export const regiseterUser = async (req: Request, res: Response) => {
         const token = createJwtToken(user.id.toString());
         res.status(200);
         res.cookie("token", token, {
-          httpOnly: true, // The cookie is not accessible via JavaScript
-          secure: true, // Use secure cookies in production
-          sameSite: "strict", // The cookie will only be sent in a first-party context
+          httpOnly: false, // The cookie is not accessible via JavaScript
+          secure: false,
+          sameSite: "none", // The cookie will only be sent in a first-party context
           expires: new Date(Date.now() + 86400000), // Set the cookie to expire after 24 hours
         });
         res.json({
