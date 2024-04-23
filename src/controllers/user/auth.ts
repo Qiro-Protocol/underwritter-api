@@ -23,12 +23,7 @@ export const regiseterUser = async (req: Request, res: Response) => {
       if (user) {
         const token = createJwtToken(user.id.toString());
         res.status(200);
-        res.cookie("token", token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV !== "development",
-          maxAge: 3600000,
-          sameSite: "strict",
-        });
+        res.cookie("token", token);
         res.json({
           data: {
             token,
@@ -64,12 +59,7 @@ export const loginUser = async (req: Request, res: Response) => {
       const isPasswordMatched = await bcrypt.compare(test_pass, user?.password);
       if (isPasswordMatched) {
         const token = createJwtToken(user.id.toString());
-        res.cookie("token", token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV !== "development",
-          maxAge: 3600000,
-          sameSite: "strict",
-        });
+        res.cookie("token", token);
 
         res.json({
           data: {
