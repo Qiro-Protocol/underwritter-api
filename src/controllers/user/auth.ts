@@ -23,18 +23,7 @@ export const regiseterUser = async (req: Request, res: Response) => {
       if (user) {
         const token = createJwtToken(user.id.toString());
         res.status(200);
-        res.cookie("token", token, {
-          httpOnly: false,
-          secure: false,
-          sameSite: "none",
-          expires: new Date(Date.now() + 86400000),
-        });
-        res.json({
-          data: {
-            token,
-          },
-          err: null,
-        });
+        res.json({ token, user });
       } else {
         res.status(500);
         res.json("some error");
@@ -59,19 +48,13 @@ export const loginUser = async (req: Request, res: Response) => {
         email,
       },
     });
-    console.log(user);
     if (user) {
       const isPasswordMatched = await bcrypt.compare(test_pass, user?.password);
       if (isPasswordMatched) {
         const token = createJwtToken(user.id.toString());
-        res.cookie("token", token);
-
         res.json({
-          data: {
-            token,
-            user,
-          },
-          err: null,
+          token,
+          user,
         });
       } else {
         res.status(403);
