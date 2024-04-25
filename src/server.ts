@@ -16,10 +16,11 @@ import { subscriptionRouter } from "./routes/subscription";
 config();
 
 const app = express();
-app.use(bodyParser.json());
-app.use(cookieParser());
 
-app.set("trust proxy", 1);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.enable("trust proxy");
 
 app.use(
   cors({
@@ -27,6 +28,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(cookieParser());
 
 app.use("/", homeRoute);
 app.use("/auth", authRoute);
